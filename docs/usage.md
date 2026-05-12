@@ -1,6 +1,6 @@
-# Using codex-tool-mocks
+# Using codex-tool-mock
 
-`codex-tool-mocks` lets you test Codex skills and agent workflows by replacing
+`codex-tool-mock` lets you test Codex skills and agent workflows by replacing
 shell-like tool calls with deterministic mocked responses. The MVP supports Codex
 hook calls exposed as `toolName: "Bash"` with a `toolInput.command` string.
 
@@ -9,14 +9,14 @@ hook calls exposed as `toolName: "Bash"` with a `toolInput.command` string.
 For normal use, install the CLI as a persistent uv tool:
 
 ```bash
-uv tool install codex-tool-mocks
-codex-tool-mocks --help
+uv tool install codex-tool-mock
+codex-tool-mock --help
 ```
 
 Then install the Codex plugin globally:
 
 ```bash
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
 The installed Codex hook will run the Python environment created by
@@ -26,28 +26,28 @@ To install from a local checkout instead of a package index:
 
 ```bash
 uv tool install .
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
 For one-off CLI usage without a persistent install:
 
 ```bash
-uvx --from codex-tool-mocks codex-tool-mocks --help
+uvx --from codex-tool-mock codex-tool-mock --help
 ```
 
 If you use `uvx` to install the Codex plugin, make the installed hook re-run
 through `uvx`:
 
 ```bash
-uvx --from codex-tool-mocks codex-tool-mocks install-global --hook-runner uvx
+uvx --from codex-tool-mock codex-tool-mock install-global --hook-runner uvx
 ```
 
 From this repository during development:
 
 ```bash
 uv sync
-uv run codex-tool-mocks --help
-uv run codex-tool-mocks install-global
+uv run codex-tool-mock --help
+uv run codex-tool-mock install-global
 ```
 
 ## Install With pip
@@ -55,8 +55,8 @@ uv run codex-tool-mocks install-global
 Install from a package index with pip:
 
 ```bash
-pip install codex-tool-mocks
-codex-tool-mocks --help
+pip install codex-tool-mock
+codex-tool-mock --help
 ```
 
 ## Initialize A Project
@@ -64,7 +64,7 @@ codex-tool-mocks --help
 Run this in the project where you want Codex to use mocks:
 
 ```bash
-codex-tool-mocks init
+codex-tool-mock init
 ```
 
 This creates:
@@ -87,27 +87,27 @@ After installing the package persistently with `pip` or `uv tool`, install the
 Codex plugin into the global Codex plugin cache:
 
 ```bash
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
 From this repository during development, run the same installer through uv:
 
 ```bash
-uv run codex-tool-mocks install-global
+uv run codex-tool-mock install-global
 ```
 
 The installer:
 
-1. Copies the bundled plugin template to `~/.codex/plugins/cache/debug/codex-tool-mocks/local`.
-2. Rewrites the installed hook command so it runs the installed `codex_tool_mocks` package.
+1. Copies the bundled plugin template to `~/.codex/plugins/cache/debug/codex-tool-mock/local`.
+2. Rewrites the installed hook command so it runs the installed `codex_tool_mock` package.
 3. Enables plugins and plugin hooks in `~/.codex/config.toml`.
-4. Enables `[plugins."codex-tool-mocks@debug"]`.
+4. Enables `[plugins."codex-tool-mock@debug"]`.
 
 By default, the installed hook command uses the Python executable that ran
-`codex-tool-mocks install-global`:
+`codex-tool-mock install-global`:
 
 ```bash
-<python> -m codex_tool_mocks.hook
+<python> -m codex_tool_mock.hook
 ```
 
 That works for `pip install`, `uv tool install`, and local `uv run` workflows as
@@ -117,14 +117,14 @@ For a one-shot `uvx` install, write a hook that re-runs through `uvx` whenever
 Codex invokes the plugin:
 
 ```bash
-uvx --from codex-tool-mocks codex-tool-mocks install-global --hook-runner uvx
+uvx --from codex-tool-mock codex-tool-mock install-global --hook-runner uvx
 ```
 
-If the package is not published under `codex-tool-mocks`, pass any uv-supported
+If the package is not published under `codex-tool-mock`, pass any uv-supported
 package spec:
 
 ```bash
-uvx --from ./codex-tool-mock codex-tool-mocks install-global \
+uvx --from ./codex-tool-mock codex-tool-mock install-global \
   --hook-runner uvx \
   --package-spec ./codex-tool-mock
 ```
@@ -132,19 +132,19 @@ uvx --from ./codex-tool-mock codex-tool-mocks install-global \
 Use `CODEX_HOME` or `--codex-home` to target a different Codex home:
 
 ```bash
-CODEX_HOME=/tmp/codex-home codex-tool-mocks install-global
+CODEX_HOME=/tmp/codex-home codex-tool-mock install-global
 ```
 
 Preview without writing:
 
 ```bash
-codex-tool-mocks install-global --dry-run
+codex-tool-mock install-global --dry-run
 ```
 
 Print the plugin path:
 
 ```bash
-codex-tool-mocks plugin-path
+codex-tool-mock plugin-path
 ```
 
 Use that path when inspecting the bundled plugin template. The global installer is
@@ -156,7 +156,7 @@ the supported way to enable it for Codex. The bundled plugin registers
 Exact command match:
 
 ```bash
-codex-tool-mocks add-shell \
+codex-tool-mock add-shell \
   --id git-status-clean \
   --command "git status --short" \
   --stdout "" \
@@ -167,7 +167,7 @@ codex-tool-mocks add-shell \
 Regex command match:
 
 ```bash
-codex-tool-mocks add-shell-regex \
+codex-tool-mock add-shell-regex \
   --id git-status-any \
   --pattern "^git status( --short)?$" \
   --stdout "" \
@@ -208,7 +208,7 @@ json.dump(
 Register it:
 
 ```bash
-codex-tool-mocks add-python \
+codex-tool-mock add-python \
   --id dynamic-date \
   --command "date" \
   --path ".codex/tool-mocks/responders/date.py"
@@ -275,13 +275,13 @@ When no fixture matches, the hook fails closed and denies the command.
 List recorded calls:
 
 ```bash
-codex-tool-mocks calls list
+codex-tool-mock calls list
 ```
 
 Clear recorded calls before a test:
 
 ```bash
-codex-tool-mocks calls clear
+codex-tool-mock calls clear
 ```
 
 ## Verify Calls In Pytest
@@ -289,7 +289,7 @@ codex-tool-mocks calls clear
 Use the helper API from tests:
 
 ```python
-from codex_tool_mocks.pytest import (
+from codex_tool_mock.pytest import (
     assert_call_sequence,
     assert_shell_called,
     assert_shell_not_called,
@@ -310,7 +310,7 @@ dependencies:
 # dependencies = ["pytest"]
 # ///
 
-from codex_tool_mocks.pytest import assert_shell_called
+from codex_tool_mock.pytest import assert_shell_called
 
 
 def test_git_status_was_called():
@@ -345,7 +345,7 @@ Python responder fixture:
 
 ## Troubleshooting
 
-- `No codex-tool-mocks fixture matched`: add a fixture for the exact command or use
+- `No codex-tool-mock fixture matched`: add a fixture for the exact command or use
   a regex fixture.
 - `uv executable was not found`: install uv and make sure it is on `PATH` for the
   Codex hook process.

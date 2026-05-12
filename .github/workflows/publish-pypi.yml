@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/codex-tool-mocks
+      url: https://pypi.org/p/codex-tool-mock
     permissions:
       contents: read
       id-token: write
@@ -65,3 +65,5 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true

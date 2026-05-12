@@ -1,8 +1,8 @@
-# codex-tool-mocks Spec
+# codex-tool-mock Spec
 
 ## Summary
 
-`codex-tool-mocks` is a Python/uv project that provides a Codex plugin plus helper CLI
+`codex-tool-mock` is a Python/uv project that provides a Codex plugin plus helper CLI
 for testing agent behavior with mocked shell-like tool calls.
 
 The MVP uses Codex `PreToolUse` hooks to record incoming Bash-style commands and rewrite
@@ -122,14 +122,14 @@ and may declare dependencies inline.
 
 ## CLI
 
-- `codex-tool-mocks init`
-- `codex-tool-mocks add-shell --id ID --command CMD --stdout TEXT --stderr TEXT --exit-code N`
-- `codex-tool-mocks add-shell-regex --id ID --pattern PATTERN --stdout TEXT --stderr TEXT --exit-code N`
-- `codex-tool-mocks add-python --id ID --command CMD --path SCRIPT`
-- `codex-tool-mocks add-python-regex --id ID --pattern PATTERN --path SCRIPT`
-- `codex-tool-mocks calls list`
-- `codex-tool-mocks calls clear`
-- `codex-tool-mocks plugin-path`
+- `codex-tool-mock init`
+- `codex-tool-mock add-shell --id ID --command CMD --stdout TEXT --stderr TEXT --exit-code N`
+- `codex-tool-mock add-shell-regex --id ID --pattern PATTERN --stdout TEXT --stderr TEXT --exit-code N`
+- `codex-tool-mock add-python --id ID --command CMD --path SCRIPT`
+- `codex-tool-mock add-python-regex --id ID --pattern PATTERN --path SCRIPT`
+- `codex-tool-mock calls list`
+- `codex-tool-mock calls clear`
+- `codex-tool-mock plugin-path`
 
 ## Milestones
 
@@ -156,7 +156,7 @@ and may declare dependencies inline.
 
 ## Assumptions
 
-- Package name: `codex-tool-mocks`.
+- PyPI distribution name: `codex-tool-mock`.
 - Project storage: `.codex/tool-mocks/`.
 - MVP matching: exact and regex command matching, first enabled fixture wins.
 - MVP Python execution: `uv run --script` for responder and verification scripts.

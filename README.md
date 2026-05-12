@@ -1,6 +1,6 @@
-# codex-tool-mocks
+# codex-tool-mock
 
-[![PyPI](https://img.shields.io/pypi/v/codex-tool-mocks.svg)](https://pypi.org/project/codex-tool-mocks/)
+[![PyPI](https://img.shields.io/pypi/v/codex-tool-mock.svg)](https://pypi.org/project/codex-tool-mock/)
 
 Codex tool mocking plugin and CLI. Useful for testing and evaluating skills on
 Codex by mocking shell-like tool calls and asserting that expected commands were
@@ -24,14 +24,14 @@ for PyPI publishing, and [SPEC.md](SPEC.md) for the MVP behavior and milestone p
 For normal use, install the CLI as a persistent uv tool:
 
 ```bash
-uv tool install codex-tool-mocks
-codex-tool-mocks --help
+uv tool install codex-tool-mock
+codex-tool-mock --help
 ```
 
 Then install the Codex plugin globally:
 
 ```bash
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
 This is the recommended uv workflow because Codex hooks will keep using the
@@ -41,28 +41,28 @@ To install from a local checkout instead of a package index:
 
 ```bash
 uv tool install .
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
 To try the CLI without installing it persistently:
 
 ```bash
-uvx --from codex-tool-mocks codex-tool-mocks --help
+uvx --from codex-tool-mock codex-tool-mock --help
 ```
 
 If you use `uvx` to install the Codex plugin, make the hook re-run through `uvx`
 so it does not depend on the temporary uvx environment:
 
 ```bash
-uvx --from codex-tool-mocks codex-tool-mocks install-global --hook-runner uvx
+uvx --from codex-tool-mock codex-tool-mock install-global --hook-runner uvx
 ```
 
 For local development from this checkout:
 
 ```bash
 uv sync
-uv run codex-tool-mocks --help
-uv run codex-tool-mocks install-global
+uv run codex-tool-mock --help
+uv run codex-tool-mock install-global
 ```
 
 ## Install With pip
@@ -70,30 +70,30 @@ uv run codex-tool-mocks install-global
 Install from a package index with pip:
 
 ```bash
-pip install codex-tool-mocks
-codex-tool-mocks --help
+pip install codex-tool-mock
+codex-tool-mock --help
 ```
 
 Initialize mock storage in the project you want to test:
 
 ```bash
-codex-tool-mocks init
+codex-tool-mock init
 ```
 
 Then add fixtures:
 
 ```bash
-codex-tool-mocks add-shell --id git-status --command "git status --short" --stdout "" --exit-code 0
+codex-tool-mock add-shell --id git-status --command "git status --short" --stdout "" --exit-code 0
 ```
 
 To install the Codex plugin globally after a persistent `pip` or `uv tool`
 install:
 
 ```bash
-codex-tool-mocks install-global
+codex-tool-mock install-global
 ```
 
-The installer copies the plugin into `~/.codex/plugins/cache/debug/codex-tool-mocks/local`
+The installer copies the plugin into `~/.codex/plugins/cache/debug/codex-tool-mock/local`
 and enables these entries in `~/.codex/config.toml`. The installed hook command
 uses the Python environment that ran the installer, so the package must remain
 installed there.
@@ -103,14 +103,14 @@ installed there.
 plugins = true
 plugin_hooks = true
 
-[plugins."codex-tool-mocks@debug"]
+[plugins."codex-tool-mock@debug"]
 enabled = true
 ```
 
 You can preview target paths without writing files:
 
 ```bash
-codex-tool-mocks install-global --dry-run
+codex-tool-mock install-global --dry-run
 ```
 
 More examples are in [docs/usage.md](docs/usage.md).

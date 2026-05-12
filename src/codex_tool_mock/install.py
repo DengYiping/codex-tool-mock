@@ -1,4 +1,4 @@
-"""Install codex-tool-mocks into the global Codex plugin cache."""
+"""Install codex-tool-mock into the global Codex plugin cache."""
 
 from __future__ import annotations
 
@@ -13,7 +13,8 @@ from importlib.resources.abc import Traversable
 from pathlib import Path
 from typing import Any
 
-PLUGIN_NAME = "codex-tool-mocks"
+PLUGIN_NAME = "codex-tool-mock"
+PYPI_PROJECT_NAME = "codex-tool-mock"
 MARKETPLACE_NAME = "debug"
 PLUGIN_KEY = f"{PLUGIN_NAME}@{MARKETPLACE_NAME}"
 
@@ -27,7 +28,7 @@ def main(argv: list[str] | None = None) -> None:
     Returns:
         None.
     """
-    parser = argparse.ArgumentParser(description="Install codex-tool-mocks globally for Codex.")
+    parser = argparse.ArgumentParser(description="Install codex-tool-mock globally for Codex.")
     parser.add_argument(
         "--codex-home",
         type=Path,
@@ -50,11 +51,11 @@ def main(argv: list[str] | None = None) -> None:
         "--hook-runner",
         choices=["python", "uvx"],
         default="python",
-        help="How installed Codex hooks run codex-tool-mocks. Defaults to installer Python.",
+        help="How installed Codex hooks run codex-tool-mock. Defaults to installer Python.",
     )
     parser.add_argument(
         "--package-spec",
-        default=PLUGIN_NAME,
+        default=PYPI_PROJECT_NAME,
         help="Package spec used when --hook-runner uvx is selected.",
     )
     parser.add_argument(
@@ -102,7 +103,7 @@ def install_global_plugin(
     plugin_source: Path | None = None,
     project_root: Path | None = None,
     hook_runner: str = "python",
-    package_spec: str = PLUGIN_NAME,
+    package_spec: str = PYPI_PROJECT_NAME,
     dry_run: bool = False,
 ) -> InstallResult:
     """Install the plugin into Codex home and enable it in config.toml.
@@ -173,7 +174,7 @@ def resolve_plugin_source(
         return plugin_source.expanduser().resolve()
     if project_root is not None:
         return project_root.expanduser().resolve() / "plugin"
-    return files("codex_tool_mocks").joinpath("plugin")
+    return files("codex_tool_mock").joinpath("plugin")
 
 
 def build_hook_command(
@@ -194,9 +195,9 @@ def build_hook_command(
     """
     if hook_runner == "python":
         executable = str(python_executable or sys.executable)
-        return f"{shlex.quote(executable)} -m codex_tool_mocks.hook"
+        return f"{shlex.quote(executable)} -m codex_tool_mock.hook"
     if hook_runner == "uvx":
-        return f"uvx --from {shlex.quote(package_spec)} codex-tool-mocks-hook"
+        return f"uvx --from {shlex.quote(package_spec)} codex-tool-mock-hook"
     raise ValueError(f"unsupported hook runner: {hook_runner}")
 
 

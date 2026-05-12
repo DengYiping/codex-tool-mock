@@ -1,16 +1,16 @@
 [project]
-name = "codex-tool-mocks"
+name = "codex-tool-mock"
 version = "0.1.0"
 description = "Codex plugin and CLI for mocking shell-like tool calls in skill and agent tests."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
-authors = [{ name = "codex-tool-mocks contributors" }]
+authors = [{ name = "codex-tool-mock contributors" }]
 dependencies = []
 
 [project.scripts]
-codex-tool-mocks = "codex_tool_mocks.cli:main"
-codex-tool-mocks-hook = "codex_tool_mocks.hook:main"
+codex-tool-mock = "codex_tool_mock.cli:main"
+codex-tool-mock-hook = "codex_tool_mock.hook:main"
 
 [dependency-groups]
 dev = [
@@ -24,7 +24,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/codex_tool_mocks"]
+packages = ["src/codex_tool_mock"]
 
 [tool.ruff]
 line-length = 100

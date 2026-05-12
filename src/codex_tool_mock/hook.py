@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from codex_tool_mocks.matchers import FixtureMatchError, find_matching_fixture
-from codex_tool_mocks.responders import ResponderError, response_from_fixture
-from codex_tool_mocks.store import load_fixtures, record_call, resolve_project_root
+from codex_tool_mock.matchers import FixtureMatchError, find_matching_fixture
+from codex_tool_mock.responders import ResponderError, response_from_fixture
+from codex_tool_mock.store import load_fixtures, record_call, resolve_project_root
 
 
 def handle_hook_payload(
@@ -71,7 +71,7 @@ def main() -> None:
         json.dump(output, sys.stdout)
         sys.stdout.write("\n")
     except (FixtureMatchError, ResponderError, ValueError, json.JSONDecodeError) as error:
-        output = _deny_pre_tool_use(f"codex-tool-mocks hook failed: {error}")
+        output = _deny_pre_tool_use(f"codex-tool-mock hook failed: {error}")
         json.dump(output, sys.stdout)
         sys.stdout.write("\n")
 
@@ -103,7 +103,7 @@ def _handle_pre_tool_use(payload: dict[str, Any], project_root: Path) -> dict[st
                 "matchedMockId": None,
             },
         )
-        return _deny_pre_tool_use(f"No codex-tool-mocks fixture matched command: {command}")
+        return _deny_pre_tool_use(f"No codex-tool-mock fixture matched command: {command}")
     fixture = match.fixture
     response = response_from_fixture(fixture, payload, project_root)
     rewritten_command = render_shell_response_command(response)

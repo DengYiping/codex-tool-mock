@@ -1,6 +1,6 @@
 import pytest
 
-from codex_tool_mocks.matchers import FixtureMatchError, find_matching_fixture
+from codex_tool_mock.matchers import FixtureMatchError, find_matching_fixture
 
 
 def test_exact_match_wins_by_file_order() -> None:

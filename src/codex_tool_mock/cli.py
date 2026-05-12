@@ -1,4 +1,4 @@
-"""Command-line interface for codex-tool-mocks."""
+"""Command-line interface for codex-tool-mock."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
-from codex_tool_mocks.install import PLUGIN_KEY, install_global_plugin
-from codex_tool_mocks.store import (
+from codex_tool_mock.install import PLUGIN_KEY, PYPI_PROJECT_NAME, install_global_plugin
+from codex_tool_mock.store import (
     append_fixture,
     clear_calls,
     init_storage,
@@ -18,7 +18,7 @@ from codex_tool_mocks.store import (
 
 
 def main(argv: list[str] | None = None) -> None:
-    """Run the codex-tool-mocks CLI.
+    """Run the codex-tool-mock CLI.
 
     Args:
         argv: Optional argument vector.
@@ -40,7 +40,7 @@ def _build_parser() -> argparse.ArgumentParser:
     Returns:
         Configured parser.
     """
-    parser = argparse.ArgumentParser(prog="codex-tool-mocks")
+    parser = argparse.ArgumentParser(prog="codex-tool-mock")
     parser.add_argument("--root", type=Path, default=None, help="Project root.")
     subcommands = parser.add_subparsers(required=True)
 
@@ -103,11 +103,11 @@ def _build_parser() -> argparse.ArgumentParser:
         "--hook-runner",
         choices=["python", "uvx"],
         default="python",
-        help="How installed Codex hooks run codex-tool-mocks. Defaults to installer Python.",
+        help="How installed Codex hooks run codex-tool-mock. Defaults to installer Python.",
     )
     install_global.add_argument(
         "--package-spec",
-        default="codex-tool-mocks",
+        default=PYPI_PROJECT_NAME,
         help="Package spec used when --hook-runner uvx is selected.",
     )
     install_global.add_argument(
@@ -239,7 +239,7 @@ def _cmd_plugin_path(args: argparse.Namespace) -> None:
     Returns:
         None.
     """
-    print(files("codex_tool_mocks").joinpath("plugin"))
+    print(files("codex_tool_mock").joinpath("plugin"))
 
 
 def _cmd_install_global(args: argparse.Namespace) -> None:

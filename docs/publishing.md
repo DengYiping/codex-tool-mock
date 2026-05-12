@@ -6,15 +6,21 @@ API token is required.
 ## One-time PyPI setup
 
 1. Create or sign in to a PyPI account at `pypi.org`.
-2. Create the `codex-tool-mocks` PyPI project once. The first upload can create
-   it automatically if the package name is available, but creating it manually
-   first makes the trusted publisher setup clearer.
-3. In PyPI, open the project settings and add a trusted publisher:
+2. Decide whether the PyPI project already exists.
+3. If `codex-tool-mock` does not exist on PyPI yet, create a pending publisher
+   from your PyPI account's `Publishing` page. Set:
+   - PyPI project name: `codex-tool-mock`
    - Owner: the GitHub organization or username that owns this repository.
    - Repository name: this repository name.
    - Workflow filename: `publish-pypi.yml`.
    - Environment name: `pypi`.
-4. In this GitHub repository, create an environment named `pypi` under
+4. If `codex-tool-mock` already exists on PyPI, open that project's settings
+   and add a trusted publisher with:
+   - Owner: the GitHub organization or username that owns this repository.
+   - Repository name: this repository name.
+   - Workflow filename: `publish-pypi.yml`.
+   - Environment name: `pypi`.
+5. In this GitHub repository, create an environment named `pypi` under
    `Settings -> Environments`. Add required reviewers if you want a manual
    approval gate before publishing.
 
@@ -47,4 +53,27 @@ and environment match the trusted publisher configuration.
 
 You can also start the workflow manually from the GitHub Actions tab with
 `workflow_dispatch`. Use manual runs carefully because PyPI does not allow
-re-uploading the same version.
+re-uploading the same version. The workflow uses `skip-existing: true`, so a
+push to `main` with an already-published version is treated as a no-op publish.
+
+## Trusted publisher troubleshooting
+
+If publishing fails with:
+
+```text
+400 Non-user identities cannot create new projects
+```
+
+then PyPI accepted the GitHub Actions identity, but that identity is not allowed
+to create the project being uploaded. Check the trusted publisher setup:
+
+- The pending publisher's PyPI project name must be exactly `codex-tool-mock`,
+  matching `name = "codex-tool-mock"` in `pyproject.toml`.
+- The workflow filename must be exactly `publish-pypi.yml`.
+- The GitHub environment must be exactly `pypi`, matching the workflow's
+  `environment.name`.
+- The GitHub owner and repository name must match the actual repository running
+  the workflow.
+
+If any pending publisher value is wrong, delete it and create a new pending
+publisher with the corrected values.

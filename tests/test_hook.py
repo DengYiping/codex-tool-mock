@@ -4,8 +4,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-from codex_tool_mocks.hook import handle_hook_payload, render_shell_response_command
-from codex_tool_mocks.store import append_jsonl, load_jsonl
+from codex_tool_mock.hook import handle_hook_payload, render_shell_response_command
+from codex_tool_mock.store import append_jsonl, load_jsonl
 
 
 def pre_tool_payload(command: str) -> dict:
@@ -93,7 +93,7 @@ def test_pre_tool_use_missing_mock_blocks_in_strict_mode(tmp_path: Path) -> None
 
     assert output["hookSpecificOutput"]["permissionDecision"] == "deny"
     assert (
-        "No codex-tool-mocks fixture matched"
+        "No codex-tool-mock fixture matched"
         in output["hookSpecificOutput"]["permissionDecisionReason"]
     )
 
@@ -156,7 +156,7 @@ def test_module_entrypoint_reads_stdin_and_writes_json(tmp_path: Path) -> None:
     env = os.environ.copy()
     env["CODEX_TOOL_MOCKS_ROOT"] = str(tmp_path)
     completed = subprocess.run(
-        [sys.executable, "-m", "codex_tool_mocks.hook"],
+        [sys.executable, "-m", "codex_tool_mock.hook"],
         input=json.dumps(pre_tool_payload("echo hi")),
         text=True,
         capture_output=True,

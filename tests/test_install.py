@@ -5,9 +5,10 @@ import tomllib
 from importlib.resources import files
 from pathlib import Path
 
-from codex_tool_mocks.cli import main as cli_main
-from codex_tool_mocks.install import (
+from codex_tool_mock.cli import main as cli_main
+from codex_tool_mock.install import (
     PLUGIN_KEY,
+    PYPI_PROJECT_NAME,
     build_hook_command,
     ensure_toml_bool,
     install_global_plugin,
@@ -20,7 +21,7 @@ def test_install_global_plugin_copies_plugin_and_enables_config(tmp_path: Path) 
     result = install_global_plugin(codex_home=codex_home)
 
     assert result.installed_plugin_root == (
-        codex_home / "plugins" / "cache" / "debug" / "codex-tool-mocks" / "local"
+        codex_home / "plugins" / "cache" / "debug" / "codex-tool-mock" / "local"
     )
     assert (result.installed_plugin_root / ".codex-plugin" / "plugin.json").is_file()
     config = (codex_home / "config.toml").read_text(encoding="utf-8")
@@ -32,7 +33,7 @@ def test_install_global_plugin_copies_plugin_and_enables_config(tmp_path: Path) 
 
 
 def test_bundled_plugin_resources_are_packaged() -> None:
-    plugin = files("codex_tool_mocks").joinpath("plugin")
+    plugin = files("codex_tool_mock").joinpath("plugin")
 
     assert plugin.joinpath(".codex-plugin", "plugin.json").is_file()
     assert plugin.joinpath("hooks", "hooks.json").is_file()
@@ -47,14 +48,14 @@ def test_install_global_plugin_rewrites_hook_command_to_installer_python(
 
     hooks = json.loads((result.installed_plugin_root / "hooks" / "hooks.json").read_text())
     pre_hook = hooks["hooks"]["PreToolUse"][0]["hooks"][0]
-    assert pre_hook["command"] == f"{shlex.quote(sys.executable)} -m codex_tool_mocks.hook"
+    assert pre_hook["command"] == f"{shlex.quote(sys.executable)} -m codex_tool_mock.hook"
     assert "uv run --project" not in pre_hook["command"]
 
 
 def test_build_hook_command_supports_uvx_runner() -> None:
-    command = build_hook_command(hook_runner="uvx", package_spec="codex-tool-mocks")
+    command = build_hook_command(hook_runner="uvx")
 
-    assert command == "uvx --from codex-tool-mocks codex-tool-mocks-hook"
+    assert command == "uvx --from codex-tool-mock codex-tool-mock-hook"
 
 
 def test_install_global_plugin_can_write_uvx_hook_command(tmp_path: Path) -> None:
@@ -63,12 +64,11 @@ def test_install_global_plugin_can_write_uvx_hook_command(tmp_path: Path) -> Non
     result = install_global_plugin(
         codex_home=codex_home,
         hook_runner="uvx",
-        package_spec="codex-tool-mocks",
     )
 
     hooks = json.loads((result.installed_plugin_root / "hooks" / "hooks.json").read_text())
     pre_hook = hooks["hooks"]["PreToolUse"][0]["hooks"][0]
-    assert pre_hook["command"] == "uvx --from codex-tool-mocks codex-tool-mocks-hook"
+    assert pre_hook["command"] == "uvx --from codex-tool-mock codex-tool-mock-hook"
 
 
 def test_install_global_plugin_preserves_existing_config(tmp_path: Path) -> None:
@@ -101,7 +101,7 @@ def test_install_global_plugin_dry_run_does_not_write(tmp_path: Path) -> None:
     result = install_global_plugin(codex_home=codex_home, dry_run=True)
 
     assert result.installed_plugin_root == (
-        codex_home / "plugins" / "cache" / "debug" / "codex-tool-mocks" / "local"
+        codex_home / "plugins" / "cache" / "debug" / "codex-tool-mock" / "local"
     )
     assert not codex_home.exists()
 
@@ -115,17 +115,18 @@ def test_install_global_plugin_is_main_cli_subcommand(
     cli_main(["install-global", "--codex-home", str(codex_home)])
 
     output = capsys.readouterr().out
-    assert "Enabled plugin: codex-tool-mocks@debug" in output
-    assert (codex_home / "plugins" / "cache" / "debug" / "codex-tool-mocks" / "local").is_dir()
+    assert "Enabled plugin: codex-tool-mock@debug" in output
+    assert (codex_home / "plugins" / "cache" / "debug" / "codex-tool-mock" / "local").is_dir()
 
 
 def test_standalone_install_console_script_is_not_packaged() -> None:
     pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
 
+    assert pyproject["project"]["name"] == PYPI_PROJECT_NAME
     scripts = pyproject["project"]["scripts"]
-    assert "codex-tool-mocks" in scripts
-    assert "codex-tool-mocks-hook" in scripts
-    assert "codex-tool-mocks-install-global" not in scripts
+    assert "codex-tool-mock" in scripts
+    assert "codex-tool-mock-hook" in scripts
+    assert "codex-tool-mock-install-global" not in scripts
 
 
 def test_ensure_toml_bool_updates_existing_section() -> None:

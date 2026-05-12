@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from codex_tool_mocks.store import load_calls as _load_calls
+from codex_tool_mock.store import load_calls as _load_calls
 
 
 def load_calls(project_root: Path | str | None = None) -> list[dict[str, Any]]:

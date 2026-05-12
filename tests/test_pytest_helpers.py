@@ -2,12 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from codex_tool_mocks.pytest import (
+from codex_tool_mock.pytest import (
     assert_call_sequence,
     assert_shell_called,
     assert_shell_not_called,
 )
-from codex_tool_mocks.store import append_jsonl
+from codex_tool_mock.store import append_jsonl
 
 
 def record_call(root: Path, command: str) -> None:
