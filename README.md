@@ -1,11 +1,13 @@
 # codex-tool-mocks
 
+[![PyPI](https://img.shields.io/pypi/v/codex-tool-mocks.svg)](https://pypi.org/project/codex-tool-mocks/)
+
 Codex tool mocking plugin and CLI. Useful for testing and evaluating skills on
 Codex by mocking shell-like tool calls and asserting that expected commands were
 used.
 
-See [docs/usage.md](docs/usage.md) for setup and usage. See [SPEC.md](SPEC.md)
-for the MVP behavior and milestone plan.
+See [docs/usage.md](docs/usage.md) for setup and usage, [docs/publishing.md](docs/publishing.md)
+for PyPI publishing, and [SPEC.md](SPEC.md) for the MVP behavior and milestone plan.
 
 ## MVP
 
