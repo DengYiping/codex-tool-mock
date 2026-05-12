@@ -21,8 +21,6 @@ for PyPI publishing, and [SPEC.md](SPEC.md) for the MVP behavior and milestone p
 
 ## Install With uv
 
-For normal use, install the CLI as a persistent uv tool:
-
 ```bash
 uv tool install codex-tool-mock
 codex-tool-mock --help
@@ -67,7 +65,8 @@ uv run codex-tool-mock install-global
 
 ## Install With pip
 
-Install from a package index with pip:
+You can also install directly from PyPI with pip, without cloning this
+repository:
 
 ```bash
 pip install codex-tool-mock
