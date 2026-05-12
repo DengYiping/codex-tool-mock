@@ -1,0 +1,6 @@
+{
+  "name": "codex-tool-mocks",
+  "version": "0.1.0",
+  "description": "Mock shell-like Codex tool calls for skill and agent tests.",
+  "hooks": "./hooks/hooks.json"
+}
