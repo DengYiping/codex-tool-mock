@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
+from codex_tool_mocks.install import PLUGIN_KEY, install_global_plugin
 from codex_tool_mocks.store import (
     append_fixture,
     clear_calls,
@@ -80,6 +82,40 @@ def _build_parser() -> argparse.ArgumentParser:
 
     plugin_path = subcommands.add_parser("plugin-path", help="Print bundled plugin path.")
     plugin_path.set_defaults(func=_cmd_plugin_path)
+
+    install_global = subcommands.add_parser(
+        "install-global",
+        help="Install the Codex plugin into global Codex config.",
+    )
+    install_global.add_argument(
+        "--codex-home",
+        type=Path,
+        default=None,
+        help="Codex home directory. Defaults to CODEX_HOME or ~/.codex.",
+    )
+    install_global.add_argument(
+        "--plugin-source",
+        type=Path,
+        default=None,
+        help="Plugin template directory. Defaults to the plugin bundled in this package.",
+    )
+    install_global.add_argument(
+        "--hook-runner",
+        choices=["python", "uvx"],
+        default="python",
+        help="How installed Codex hooks run codex-tool-mocks. Defaults to installer Python.",
+    )
+    install_global.add_argument(
+        "--package-spec",
+        default="codex-tool-mocks",
+        help="Package spec used when --hook-runner uvx is selected.",
+    )
+    install_global.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print planned paths without writing files.",
+    )
+    install_global.set_defaults(func=_cmd_install_global)
     return parser
 
 
@@ -203,7 +239,32 @@ def _cmd_plugin_path(args: argparse.Namespace) -> None:
     Returns:
         None.
     """
-    print(Path(__file__).resolve().parents[2] / "plugin")
+    print(files("codex_tool_mocks").joinpath("plugin"))
+
+
+def _cmd_install_global(args: argparse.Namespace) -> None:
+    """Handle install-global.
+
+    Args:
+        args: Parsed args.
+
+    Returns:
+        None.
+    """
+    result = install_global_plugin(
+        codex_home=args.codex_home,
+        plugin_source=args.plugin_source,
+        hook_runner=args.hook_runner,
+        package_spec=args.package_spec,
+        dry_run=args.dry_run,
+    )
+    print(f"Codex home: {result.codex_home}")
+    print(f"Installed plugin: {result.installed_plugin_root}")
+    print(f"Config: {result.config_path}")
+    if args.dry_run:
+        print("Dry run only; no files were changed.")
+    else:
+        print(f"Enabled plugin: {PLUGIN_KEY}")
 
 
 def _append_fixture(

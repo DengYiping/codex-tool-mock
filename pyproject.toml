@@ -10,6 +10,7 @@ dependencies = []
 
 [project.scripts]
 codex-tool-mocks = "codex_tool_mocks.cli:main"
+codex-tool-mocks-hook = "codex_tool_mocks.hook:main"
 
 [dependency-groups]
 dev = [
