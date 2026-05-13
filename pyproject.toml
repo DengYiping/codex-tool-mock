@@ -37,5 +37,6 @@ select = ["E", "F", "I", "UP", "B"]
 quote-style = "double"
 indent-style = "space"
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.basedpyright]
+venvPath = "."
+venv = ".venv"
